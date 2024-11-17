@@ -1,0 +1,21 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "main.py",
+        "use": "@vercel/python"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "main.py"
+      }
+    ],
+    "env": {
+      "MONGODB_USERNAME": "sidhartha",
+      "MONGODB_PASSWORD": "Sid@9392548369",
+      "MONGODB_HOST": "datacollection.fue67.mongodb.net",
+      "MONGODB_DATABASE": "nocaptcha-database"
+    }
+  }
