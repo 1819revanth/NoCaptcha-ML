@@ -92,3 +92,9 @@ async def test_endpoint():
     except errors.ConnectionFailure as e:
         logging.error(f"MongoDB connection test failed: {e}")
         raise HTTPException(status_code=500, detail="Failed to connect to MongoDB")
+
+PORT = int(os.getenv("PORT", 8000))
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("main:app", host="0.0.0.0", port=PORT, reload=True)
