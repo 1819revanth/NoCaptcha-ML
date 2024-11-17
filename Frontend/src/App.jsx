@@ -34,7 +34,6 @@ const App = () => {
   });
 
   useEffect(() => {
-    // Variables to track interaction metrics
     let interactionStartTime = Date.now();
     let pageLoadTime = Date.now();
     let firstInteraction = false;
@@ -59,7 +58,6 @@ const App = () => {
 
     const TRACKING_INTERVAL = 3000; // Log data every 3 seconds
 
-    // Mouse move handler
     const handleMouseMove = (event) => {
       const currentPosition = { x: event.clientX, y: event.clientY };
       const currentTime = Date.now();
@@ -90,13 +88,11 @@ const App = () => {
       }
     };
 
-    // Mouse down handler
     const handleMouseDown = (event) => {
       totalClicks += 1;
       clickPositions.push({ x: event.clientX, y: event.clientY });
     };
 
-    // Scroll handler
     const handleScroll = (event) => {
       const currentDirection = event.deltaY > 0 ? "down" : "up";
       if (lastScrollDirection && currentDirection !== lastScrollDirection) {
@@ -106,7 +102,6 @@ const App = () => {
       lastScrollDirection = currentDirection;
     };
 
-    // Key down handler
     const handleKeyDown = (event) => {
       if (["Backspace", "Delete"].includes(event.key)) {
         setKeyboardStats((prev) => ({
@@ -124,7 +119,6 @@ const App = () => {
       }
     };
 
-    // Key up handler
     const handleKeyUp = (event) => {
       const keyHoldEndTime = Date.now();
       if (keyHoldStartTimes[event.key]) {
@@ -135,7 +129,6 @@ const App = () => {
       typingCount += 1;
     };
 
-    // Function to log data and reset tracking variables
     const logData = async () => {
       const currentTime = Date.now();
       const duration = (currentTime - interactionStartTime) / 1000;
@@ -165,45 +158,34 @@ const App = () => {
         ? keypressTimes.reduce((a, b) => a + b, 0) / keypressTimes.length
         : 0;
 
-      const mouseData = {
-        Mouse_Path_Length: totalDistance,
-        Mouse_Avg_Speed: totalDistance / duration || 0,
-        Mouse_Max_Speed: maxSpeed || 0,
-        Mouse_Stops: stops,
-        Mouse_Click_Frequency: totalClicks / duration || 0,
-        Mouse_Scroll_Speed: totalScrollDistance / duration || 0,
-        Mouse_Scroll_Direction_Changes: scrollDirectionChanges,
-        Avg_Click_X: avgClickX,
-        Avg_Click_Y: avgClickY,
-        Click_Spread: clickSpread,
-      };
-
-      const keyboardData = {
-        Typing_Speed: typingCount / duration || 0,
-        Keypress_Interval_Avg: avgKeypressInterval,
-        Key_Hold_Duration_Avg: avgKeyHoldDuration,
-        Special_Key_Usage: specialKeyCount,
-        Error_Corrections: keyboardStats.Error_Corrections,
-        Pause_Between_Typing: keypressTimes.length > 1
-          ? Math.max(...keypressTimes) - Math.min(...keypressTimes)
-          : 0,
-      };
-
       const combinedData = {
-        ...mouseData,
-        ...keyboardData,
-        Interaction_Duration: duration,
-        Mouse_Keyboard_Interaction_Correlation: 0.8, // Placeholder value
-        Response_Time: responseTime,
+        Mouse_Path_Length: parseFloat(totalDistance || 0),
+        Mouse_Avg_Speed: parseFloat(totalDistance / duration || 0),
+        Mouse_Max_Speed: parseFloat(maxSpeed || 0),
+        Mouse_Stops: parseInt(stops || 0),
+        Mouse_Click_Frequency: parseFloat(totalClicks / duration || 0),
+        Mouse_Scroll_Speed: parseFloat(totalScrollDistance / duration || 0),
+        Mouse_Scroll_Direction_Changes: parseInt(scrollDirectionChanges || 0),
+        Avg_Click_X: parseFloat(avgClickX || 0),
+        Avg_Click_Y: parseFloat(avgClickY || 0),
+        Click_Spread: parseFloat(clickSpread || 0),
+        Typing_Speed: parseFloat(typingCount / duration || 0),
+        Keypress_Interval_Avg: parseFloat(avgKeypressInterval || 0),
+        Key_Hold_Duration_Avg: parseFloat(avgKeyHoldDuration || 0),
+        Special_Key_Usage: parseInt(specialKeyCount || 0),
+        Error_Corrections: parseInt(keyboardStats.Error_Corrections || 0),
+        Pause_Between_Typing: parseFloat(
+          keypressTimes.length > 1
+            ? Math.max(...keypressTimes) - Math.min(...keypressTimes)
+            : 0
+        ),
+        Interaction_Duration: parseFloat(duration || 0),
+        Mouse_Keyboard_Interaction_Correlation: parseFloat(0.8),
+        Response_Time: parseFloat(responseTime || 0),
       };
 
-      setMouseStats(mouseData);
-      setKeyboardStats(keyboardData);
-      setInteractionData((prevData) => [...prevData, combinedData]);
+      console.log("Payload sent to backend:", combinedData);
 
-      // Send data to backend
-      //https://nocaptch-final.onrender.com/api/interaction
-      console.log(combinedData);
       try {
         const response = await fetch("https://nocaptch-final.onrender.com/api/interaction", {
           method: "POST",
@@ -222,7 +204,6 @@ const App = () => {
         console.error("Error sending data:", error);
       }
 
-      // Reset tracking variables
       totalDistance = 0;
       maxSpeed = 0;
       stops = 0;
@@ -234,7 +215,6 @@ const App = () => {
       keypressTimes = [];
     };
 
-    // Attach event listeners
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mousedown", handleMouseDown);
     document.addEventListener("wheel", handleScroll);
