@@ -47,25 +47,26 @@ except errors.ConnectionFailure as e:
 
 # Define the interaction data schema
 class InteractionData(BaseModel):
-    Mouse_Path_Length: float = Field(..., example=120.5)
-    Mouse_Avg_Speed: float = Field(..., example=150.0)
-    Mouse_Max_Speed: float = Field(..., example=200.0)
-    Mouse_Stops: int = Field(..., example=5)
-    Mouse_Click_Frequency: float = Field(..., example=2.0)
-    Mouse_Scroll_Speed: float = Field(..., example=30.0)
-    Mouse_Scroll_Direction_Changes: int = Field(..., example=3)
-    Avg_Click_X: float = Field(..., example=250.0)
-    Avg_Click_Y: float = Field(..., example=300.0)
-    Click_Spread: float = Field(..., example=50.0)
-    Typing_Speed: float = Field(..., example=10.0)
-    Keypress_Interval_Avg: float = Field(..., example=100.0)
-    Key_Hold_Duration_Avg: float = Field(..., example=120.0)
-    Special_Key_Usage: int = Field(..., example=5)
-    Error_Corrections: int = Field(..., example=2)
-    Pause_Between_Typing: float = Field(..., example=500.0)
-    Interaction_Duration: float = Field(..., example=3.0)
-    Mouse_Keyboard_Interaction_Correlation: float = Field(..., example=0.8)
-    Response_Time: float = Field(..., example=1.5)
+    Mouse_Path_Length: float
+    Mouse_Avg_Speed: float
+    Mouse_Max_Speed: float
+    Mouse_Stops: int
+    Mouse_Click_Frequency: float
+    Mouse_Scroll_Speed: float
+    Mouse_Scroll_Direction_Changes: int
+    Avg_Click_X: float
+    Avg_Click_Y: float
+    Click_Spread: float
+    Typing_Speed: float
+    Keypress_Interval_Avg: float
+    Key_Hold_Duration_Avg: float
+    Special_Key_Usage: int
+    Error_Corrections: int
+    Pause_Between_Typing: float
+    Interaction_Duration: float
+    Mouse_Keyboard_Interaction_Correlation: float
+    Response_Time: float
+
 
 @app.post("/api/interaction")
 async def receive_interaction(data: InteractionData):
