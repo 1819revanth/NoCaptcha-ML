@@ -202,6 +202,8 @@ const App = () => {
       setInteractionData((prevData) => [...prevData, combinedData]);
 
       // Send data to backend
+      //https://nocaptch-final.onrender.com/api/interaction
+      console.log(combinedData);
       try {
         const response = await fetch("https://nocaptch-final.onrender.com/api/interaction", {
           method: "POST",
