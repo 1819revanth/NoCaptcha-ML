@@ -56,7 +56,7 @@ const App = () => {
     let keyHoldStartTimes = {};
     let specialKeyCount = 0;
 
-    const TRACKING_INTERVAL = 3000; // Log data every 3 seconds
+    const TRACKING_INTERVAL = 5000; // Log data every 5 seconds
 
     const handleMouseMove = (event) => {
       const currentPosition = { x: event.clientX, y: event.clientY };
