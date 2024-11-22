@@ -33,6 +33,9 @@ const App = () => {
     Pause_Between_Typing: 0,
   });
 
+  // State to indicate bot or human interaction
+  const [isBot, setIsBot] = useState(0); // Default to human (0)
+
   useEffect(() => {
     let interactionStartTime = Date.now();
     let pageLoadTime = Date.now();
@@ -182,6 +185,7 @@ const App = () => {
         Interaction_Duration: parseFloat(duration || 0),
         Mouse_Keyboard_Interaction_Correlation: parseFloat(0.8),
         Response_Time: parseFloat(responseTime || 0),
+        Result: isBot, // Add the result indicating bot or human
       };
 
       console.log("Payload sent to backend:", combinedData);
@@ -231,7 +235,7 @@ const App = () => {
       document.removeEventListener("keyup", handleKeyUp);
       clearInterval(intervalId);
     };
-  }, []);
+  }, [isBot]); // Trigger re-run if isBot changes
 
   const handleSubmit = (event) => {
     event.preventDefault();

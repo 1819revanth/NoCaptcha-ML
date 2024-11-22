@@ -70,13 +70,26 @@ class InteractionData(BaseModel):
     Interaction_Duration: float = Field(..., example=3.0)
     Mouse_Keyboard_Interaction_Correlation: float = Field(..., example=0.8)
     Response_Time: float = Field(..., example=1.5)
+    Result: int = Field(..., example=1)  # Add the Result field (1 for bot, 0 for human)
 
 # Handle interaction data
 @app.post("/api/interaction")
 async def receive_interaction(data: InteractionData):
     logging.info(f"Received data: {data.dict()}")  # Log parsed data for debugging
+
+    # Filter out records with too many zero values
+    data_dict = data.dict()
+    total_fields = len(data_dict) - 1  # Exclude the `Result` field
+    zero_fields = sum(1 for key, value in data_dict.items() if key != "Result" and value == 0)
+
+    # Set the threshold (e.g., allow only 30% or fewer zero fields)
+    zero_threshold = 0.5
+    if zero_fields / total_fields > zero_threshold:
+        logging.warning("Data discarded due to too many zero values.")
+        return {"message": "Data discarded due to too many zero values."}
+
     try:
-        result = collection.insert_one(data.dict())
+        result = collection.insert_one(data_dict)
         if not result.acknowledged:
             raise Exception("Failed to acknowledge MongoDB insertion.")
         logging.info(f"Data stored successfully with ID: {result.inserted_id}")
