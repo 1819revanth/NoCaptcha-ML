@@ -31,7 +31,7 @@ async function simulateBotSession(sessionNumber) {
   const page = await browser.newPage();
 
   // Navigate to your website
-  const websiteUrl = 'http://localhost:5173'; // Replace with your actual website's URL
+  const websiteUrl = 'https://no-captch-final.vercel.app'; // Replace with your actual website's URL
   await page.goto(websiteUrl, { waitUntil: 'networkidle2' });
 
   // Initialize current mouse position
@@ -118,7 +118,7 @@ async function runMultipleSessions(n) {
 }
 
 // Run 10 sessions sequentially (modify this number as needed)
-const numberOfSessions = 10;
+const numberOfSessions = 96;
 runMultipleSessions(numberOfSessions).catch((err) => {
   console.error('Error running multiple bot sessions:', err.message);
 });

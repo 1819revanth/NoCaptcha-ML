@@ -34,7 +34,7 @@ const App = () => {
   });
 
   // State to indicate bot or human interaction
-  const [isBot, setIsBot] = useState(0); // Default to human (0)
+  const [isBot, setIsBot] = useState(1); // Default to human (0)
 
   useEffect(() => {
     let interactionStartTime = Date.now();
