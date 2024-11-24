@@ -118,7 +118,7 @@ async function runMultipleSessions(n) {
 }
 
 // Run 10 sessions sequentially (modify this number as needed)
-const numberOfSessions = 86;
+const numberOfSessions = 27;
 runMultipleSessions(numberOfSessions).catch((err) => {
   console.error('Error running multiple bot sessions:', err.message);
 });
